@@ -2,6 +2,43 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, request, render_template
 
+#満腹度
+hungry=0
+#好感度
+love=0
+#ほこり
+dust=0
+
+
+def food_child(sdelf):
+    pass
+
+def play_child(self):
+    pass
+
+def cleen_child(self):
+    pass
+
+def sleep_child(self):
+    pass
+
+def food_adult(sdelf):
+    pass
+
+def play_adult(self):
+    pass
+
+def cleen_adult(self):
+    pass
+
+def sleep_adult(self):
+    pass
+
+
+
+
+
+
 app = Flask(__name__)
 
 #ホーム画面
