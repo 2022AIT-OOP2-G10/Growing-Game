@@ -5,13 +5,17 @@ from PySide6.QtGui import QPixmap
 class GameButton(QLabel):
     def __init__(self):
         super().__init__()
+        # 画像のパス
         image = "./Images/character_egg.png"
+        # 画像を配置する
         self.setPixmap(QPixmap(image).scaledToHeight(150))
 
+    # QLabelでマウスイベントを受け取るために必要
     def mousePressEvent(self,event):
         self.clickedmethod()
         return QLabel.mousePressEvent(self,event)
     
+    # クリックされた時の処理
     def clickedmethod(self):
         #処理したい内容。
         print("clicked")
