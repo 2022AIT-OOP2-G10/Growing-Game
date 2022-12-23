@@ -1,0 +1,54 @@
+.title {
+    text-align: center;
+    font-size: 400%;
+    font-family: "arial black";
+}
+.button_solid013{
+    margin-right:auto;
+    margin-left:auto;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.button_solid013 a {
+    background: #6bb6ff;
+    border-radius: 3px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 250px;
+    padding: 10px 25px;
+    color: #FFF;
+    transition: 0.3s ease-in-out;
+    font-weight: 600;
+    border-radius: 5px;
+    border-bottom: 4px solid #1d7fde;
+    overflow: hidden;
+}
+
+.button_solid013 a:active {
+    transform: translateY(4px);
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
+    border-bottom: none;
+}
+
+.button_solid013 a:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: -100%;
+    background-image: linear-gradient( 130deg, rgba(255, 255, 255, 0) 25%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 55%);
+    animation: shine 3s infinite;
+}
+@keyframes shine {
+    33% {
+      left: 100%;
+    }
+    100% {
+      left: 100%;
+    }
+}

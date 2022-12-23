@@ -42,13 +42,13 @@ def sleep_adult(self):
 app = Flask(__name__)
 
 #ホーム画面
-@app.route('/home', methods=["GET"])
-def home_get():
-    return render_template('home.html')
+@app.route('/', methods=["GET"])
+def title():
+    return render_template('title.html')
 
 #たまごの選択画面
 @app.route('/select', methods=["GET"])
-def home_get():
+def select():
     return render_template('select-egg.html')
 
 #たまごをあたためる画面
@@ -58,10 +58,12 @@ def home_get():
 
 #メインのゲーム画面(タスクの選択)
 @app.route('/game', methods=["GET"])
-def home_get():
+def home_get2():
     return render_template('game.html')
 
 #たまごをあたためる画面
 @app.route('/finish', methods=["GET"])
-def home_get():
+def home_get3():
     return render_template('finish.html')
+if __name__ == '__main__':
+    app.run(debug=True)
