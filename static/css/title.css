@@ -1,6 +1,13 @@
 .title {
     text-align: center;
-    font-size: 50px;
+    font-size: 400%;
+    font-family: "arial black";
+}
+.button_solid013{
+    margin-right:auto;
+    margin-left:auto;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 .button_solid013 a {
     background: #6bb6ff;
@@ -10,7 +17,7 @@
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-    max-width: 240px;
+    max-width: 250px;
     padding: 10px 25px;
     color: #FFF;
     transition: 0.3s ease-in-out;
