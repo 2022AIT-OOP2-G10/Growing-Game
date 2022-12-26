@@ -13,8 +13,10 @@ dust=0
 def food_child(sdelf):
     pass
 
-def play_child(self):
-    pass
+def play_child():
+    hungry = hungry - 40
+    love = love + 20
+    dust = dust + 50
 
 def cleen_child(self):
     pass
@@ -34,7 +36,10 @@ def cleen_adult(self):
 def sleep_adult(self):
     pass
 
-
+play_child()
+print(hungry)
+print(love)
+print(dust)
 
 
 
