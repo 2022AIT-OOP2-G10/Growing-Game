@@ -10,58 +10,61 @@ love=0
 dust=0
 
 
-def food_child(sdelf):
+def food_child():
+    hungry = 100
+    if love <= 100:
+        love = love + 10
+    elif love >= 100:
+        love = 100
+    
+
+def play_child():
     pass
 
-def play_child(self):
+def cleen_child():
     pass
 
-def cleen_child(self):
+def sleep_child():
     pass
 
-def sleep_child(self):
+def food_adult():
     pass
 
-def food_adult(sdelf):
+def play_adult():
     pass
 
-def play_adult(self):
+def cleen_adult():
     pass
 
-def cleen_adult(self):
+def sleep_adult():
     pass
-
-def sleep_adult(self):
-    pass
-
-
 
 
 
 
 app = Flask(__name__)
 
-#ホーム画面
-@app.route('/home', methods=["GET"])
-def home_get():
-    return render_template('home.html')
+# #ホーム画面
+# @app.route('/home', methods=["GET"])
+# def home_get():
+#     return render_template('home.html')
 
-#たまごの選択画面
-@app.route('/select', methods=["GET"])
-def home_get():
-    return render_template('select-egg.html')
+# #たまごの選択画面
+# @app.route('/select', methods=["GET"])
+# def home_get():
+#     return render_template('select-egg.html')
 
-#たまごをあたためる画面
-@app.route('/warm', methods=["GET"])
-def home_get():
-    return render_template('warm-egg.html')
+# #たまごをあたためる画面
+# @app.route('/warm', methods=["GET"])
+# def home_get():
+#     return render_template('warm-egg.html')
 
-#メインのゲーム画面(タスクの選択)
-@app.route('/game', methods=["GET"])
-def home_get():
-    return render_template('game.html')
+# #メインのゲーム画面(タスクの選択)
+# @app.route('/game', methods=["GET"])
+# def home_get():
+#     return render_template('game.html')
 
-#たまごをあたためる画面
-@app.route('/finish', methods=["GET"])
-def home_get():
-    return render_template('finish.html')
+# #たまごをあたためる画面
+# @app.route('/finish', methods=["GET"])
+# def home_get():
+#     return render_template('finish.html')
