@@ -9,11 +9,13 @@ love=0
 #ほこり
 dust=0
 
-
-def food_child(sdelf):
+# 綴りが違ってたので一応書き換えた
+def food_child(self):
     pass
 
 def play_child():
+    # グローバル変数を書き換える場合は明示的に宣言する必要があるらしい．
+    global hungry, love, dust
     hungry = hungry - 40
     love = love + 20
     dust = dust + 50
@@ -24,7 +26,7 @@ def cleen_child(self):
 def sleep_child(self):
     pass
 
-def food_adult(sdelf):
+def food_adult(self):
     pass
 
 def play_adult(self):
@@ -36,10 +38,6 @@ def cleen_adult(self):
 def sleep_adult(self):
     pass
 
-play_child()
-print(hungry)
-print(love)
-print(dust)
 
 
 
@@ -49,6 +47,12 @@ app = Flask(__name__)
 #ホーム画面
 @app.route('/', methods=["GET"])
 def title():
+    # テスト用にタイトル画面表示するときにplay_childを実行する
+    play_child()
+    print(hungry) # -40
+    print(love) # 20
+    print(dust) # 50
+    
     return render_template('title.html')
 
 #たまごの選択画面
