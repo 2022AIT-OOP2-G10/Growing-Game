@@ -44,27 +44,30 @@ def sleep_adult():
 
 app = Flask(__name__)
 
-# #ホーム画面
-# @app.route('/home', methods=["GET"])
-# def home_get():
-#     return render_template('home.html')
 
-# #たまごの選択画面
-# @app.route('/select', methods=["GET"])
-# def home_get():
-#     return render_template('select-egg.html')
+#ホーム画面
+@app.route('/', methods=["GET"])
+def title():
+    return render_template('title.html')
 
-# #たまごをあたためる画面
-# @app.route('/warm', methods=["GET"])
-# def home_get():
-#     return render_template('warm-egg.html')
+#たまごの選択画面
+@app.route('/select', methods=["GET"])
+def select():
+    return render_template('select-egg.html')
 
-# #メインのゲーム画面(タスクの選択)
-# @app.route('/game', methods=["GET"])
-# def home_get():
-#     return render_template('game.html')
+#たまごをあたためる画面
+@app.route('/warm', methods=["GET"])
+def home_get():
+    return render_template('warm-egg.html')
 
-# #たまごをあたためる画面
-# @app.route('/finish', methods=["GET"])
-# def home_get():
-#     return render_template('finish.html')
+#メインのゲーム画面(タスクの選択)
+@app.route('/game', methods=["GET"])
+def home_get2():
+    return render_template('game.html')
+
+#たまごをあたためる画面
+@app.route('/finish', methods=["GET"])
+def home_get3():
+    return render_template('finish.html')
+if __name__ == '__main__':
+    app.run(debug=True)
