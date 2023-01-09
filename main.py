@@ -19,7 +19,7 @@ def play_child():
     global hungry, love, dust
     if hungry <= 40:
         hungry = 0
-    elif hungry < 40:
+    elif hungry > 40:
         hungry = hungry - 40
 
     if love >= 80:
@@ -66,22 +66,57 @@ def sleep_child():
         love = love + 20
 
 
-def food_adult(self):
-    pass
-
 def play_adult():
-    pass
+    global hungry, love, dust
+    if hungry <= 30:
+        hungry = 0
+    elif hungry < 30:
+        hungry = hungry - 30
+
+    if love >= 85:
+        love = 100
+    elif love < 85:
+        love = love + 15
+
+    if dust >= 60:
+        dust = 100
+    elif dust < 60:
+        dust = dust + 40
+
+
+def food_adult():
+    global hungry, love, dust
+    hungry = 100
+    if love <= 100:
+        love = love + 10
+    elif love >= 100:
+        love = 100
+
 
 def cleen_adult():
-    pass
+    global hungry, love, dust
+    if hungry <= 30:
+        hungry = 0
+    elif hungry > 30:
+        hungry = hungry - 30
+    
+    if love >= 80:
+        love = 100
+    elif love < 80:
+        love = love + 80
+    dust = 0
 
 def sleep_adult():
-    pass
+    global hungry, love, dust
+    if hungry <= 30:
+        hungry = 0
+    elif hungry > 30:
+        hungry = hungry - 30
 
-play_child()
-print(hungry)
-print(love)
-print(dust)
+    if love >= 80:
+        love = 100
+    elif love < 80:
+        love = love + 20
 
 
 app = Flask(__name__)
