@@ -8,33 +8,43 @@ hungry=0
 love=0
 #ほこり
 dust=0
+#成長度
+grow=0
 
+#何日目か
+day=1
 
-def food_child(self):
-    pass
 
 def play_child():
     global hungry, love, dust
     hungry = hungry - 40
     love = love + 20
     dust = dust + 50
-
-def cleen_child(self):
+    
+def food_child():
+    hungry = 100
+    if love <= 100:
+        love = love + 10
+    elif love >= 100:
+        love = 100
+  
+def cleen_child():
     pass
 
-def sleep_child(self):
+def sleep_child():
     pass
+
 
 def food_adult(self):
     pass
 
-def play_adult(self):
+def play_adult():
     pass
 
-def cleen_adult(self):
+def cleen_adult():
     pass
 
-def sleep_adult(self):
+def sleep_adult():
     pass
 
 play_child()
@@ -43,9 +53,8 @@ print(love)
 print(dust)
 
 
-
-
 app = Flask(__name__)
+
 
 #ホーム画面
 @app.route('/', methods=["GET"])
@@ -70,7 +79,18 @@ def home_get():
 #メインのゲーム画面(タスクの選択)
 @app.route('/game', methods=["GET"])
 def home_get2():
-    return render_template('game.html')
+    # クエリを使ってGETメソッドで処理できる(都合悪そうならPOSTにも変更可)
+    task=request.args.get('task')
+    if task == 'eat':
+        # ご飯を食べる関数　とかをここに書く
+        print("ご飯を食べました")
+    elif task == 'play':
+        # 遊ぶ
+        print("遊びました")
+    elif task == 'sleep':
+        # 寝る
+        print("寝ました")
+    return render_template('game.html',day=day,hungry=hungry,dust=dust,grow=grow)
 
 #たまごをあたためる画面
 @app.route('/finish', methods=["GET"])
