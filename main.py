@@ -14,24 +14,28 @@ grow=0
 #何日目か
 day=1
 
+
+def play_child():
+    global hungry, love, dust
+    hungry = hungry - 40
+    love = love + 20
+    dust = dust + 50
+    
 def food_child():
     hungry = 100
     if love <= 100:
         love = love + 10
     elif love >= 100:
         love = 100
-    
-
-def play_child():
-    pass
-
+  
 def cleen_child():
     pass
 
 def sleep_child():
     pass
 
-def food_adult():
+
+def food_adult(self):
     pass
 
 def play_adult():
@@ -43,7 +47,10 @@ def cleen_adult():
 def sleep_adult():
     pass
 
-
+play_child()
+print(hungry)
+print(love)
+print(dust)
 
 
 app = Flask(__name__)
@@ -52,6 +59,11 @@ app = Flask(__name__)
 #ホーム画面
 @app.route('/', methods=["GET"])
 def title():
+    #タイトル画面表示時に表示
+    play_child()
+    print(hungry)
+    print(love)
+    print(dust)
     return render_template('title.html')
 
 #たまごの選択画面
