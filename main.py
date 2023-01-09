@@ -17,11 +17,23 @@ day=1
 
 def play_child():
     global hungry, love, dust
-    hungry = hungry - 40
-    love = love + 20
-    dust = dust + 50
+    if hungry <= 40:
+        hungry = 0
+    elif hungry < 40:
+        hungry = hungry - 40
+
+    if love >= 80:
+        love = 100
+    elif love < 80:
+        love = love + 20
+
+    if dust >= 50:
+        dust = 100
+    elif dust < 50:
+        dust = dust + 50
     
 def food_child():
+    global hungry, love, dust
     hungry = 100
     if love <= 100:
         love = love + 10
@@ -29,10 +41,29 @@ def food_child():
         love = 100
   
 def cleen_child():
-    pass
+    global hungry, love, dust
+    if hungry <= 40:
+        hungry = 0
+    elif hungry > 40:
+        hungry = hungry - 40
+    
+    if love >= 90:
+        love = 100
+    elif love < 90:
+        love = love + 90
+    dust = 0
 
 def sleep_child():
-    pass
+    global hungry, love, dust
+    if hungry <= 30:
+        hungry = 0
+    elif hungry > 30:
+        hungry = hungry - 30
+
+    if love >= 80:
+        love = 100
+    elif love < 80:
+        love = love + 20
 
 
 def food_adult(self):
