@@ -1,7 +1,8 @@
 .select_txt {
     text-align: center;
     font-size: 400%;
-    font-family: "arial black";
+    font-family: "Tsukushi A Round Gothic","筑紫A丸ゴシック";
+    font-weight: bold;
 }
 
 .select_egg {

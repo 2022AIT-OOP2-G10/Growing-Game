@@ -1,7 +1,8 @@
 .title { /*育成ゲーム*/
     text-align: center;
     font-size: 400%;
-    font-family: "arial black";
+    font-family: "Tsukushi A Round Gothic","筑紫A丸ゴシック";
+    font-weight: bold;
 }
 .button_solid013{ /*ボタンの場所*/
     margin-right:auto;
@@ -18,8 +19,9 @@
     align-items: center;
     margin: 0 auto;
     max-width: 250px;
-    padding: 10px 25px;
+    padding: 20px 30px;
     color: #FFF;
+    font-size: 200%;
     transition: 0.3s ease-in-out;
     font-weight: 600;
     border-radius: 5px;
@@ -73,7 +75,10 @@
     background-position:  20px 0, 20px 0, 0 0, 0 0;
     background-size: 40px 40px;
     background-repeat: repeat;
+    
   }
+
+
   
   /*=============
   base
