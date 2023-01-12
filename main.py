@@ -19,6 +19,7 @@ day = 1
 #卵=0,ひな=1,大人=2
 status = 1
 
+# 遊ぶ(ひな)
 def play_child():
     global hungry, love, dust
     if hungry <= 40:
@@ -37,6 +38,7 @@ def play_child():
         dust = dust + 50
     
 
+# ごはん(ひな)
 def food_child():
     global hungry, love, dust
     hungry = 100
@@ -44,7 +46,8 @@ def food_child():
         love = love + 10
     elif love >= 100:
         love = 100
-  
+
+# そうじ(ひな)
 def cleen_child():
     global hungry, love, dust
     if hungry <= 40:
@@ -58,6 +61,7 @@ def cleen_child():
         love = love + 90
     dust = 0
 
+# ねる(ひな)
 def sleep_child():
     global hungry, love, dust
     if hungry <= 30:
@@ -70,7 +74,7 @@ def sleep_child():
     elif love < 80:
         love = love + 20
 
-
+# 遊ぶ(大人)
 def play_adult():
     global hungry, love, dust
     if hungry <= 30:
@@ -88,7 +92,6 @@ def play_adult():
     elif dust < 60:
         dust = dust + 40
 
-
 # ごはん（大人）
 def food_adult():
     global hungry, love, dust
@@ -97,7 +100,6 @@ def food_adult():
         love = love + 10
     elif love >= 100:
         love = 100
-
 
 # そうじ（大人）
 def cleen_adult():
@@ -171,6 +173,8 @@ def growing():
                 play_child()
             elif task == 'sleep':
                 sleep_child()
+            elif task == 'clean':
+                cleen_child()
 
         if status == 2:
             if task == 'eat':
@@ -179,6 +183,8 @@ def growing():
                 play_adult()
             elif task == 'sleep':
                 sleep_adult()
+            elif task == 'clean':
+                cleen_adult()
 
         nextday()
 
