@@ -171,23 +171,23 @@ def growing():
     if task != None:
         if status == 1:
             if task == 'eat':
-                food_child()
+                food_child(c)
             elif task == 'play':
-                play_child()
+                play_child(c)
             elif task == 'sleep':
-                sleep_child()
+                sleep_child(c)
             elif task == 'clean':
-                cleen_child()
+                cleen_child(c)
 
         if status == 2:
             if task == 'eat':
-                food_adult()
+                food_adult(a)
             elif task == 'play':
-                play_adult()
+                play_adult(a)
             elif task == 'sleep':
-                sleep_adult()
+                sleep_adult(a)
             elif task == 'clean':
-                cleen_adult()
+                cleen_adult(a)
 
         nextday()
 
