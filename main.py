@@ -16,9 +16,12 @@ grow = 0
 # 何日目か
 day = 1
 
-#卵=0,ひな=1,大人=2
+#卵=0,ひな=1,大人(a)=2, 大人(b)=3
+#魚卵=4, ひな=5, 大人(a)=6, 大人(b)=7
 status = 1
 
+food_count = 0 #ごはんを選択した数
+evo = 0 #分岐フラグ
 grow_end = False #育成終了
 death = False #餓死
 runaway = False #逃走
@@ -136,23 +139,29 @@ def sleep_adult(adu):
 a = adult()
 
 def day_end(chi, adu):
+    global status,day
+
+    #成長分岐
+    if food_count >= 6:
+        evo = 1
+
     #死亡フラグ
-    if status == 1 :
+    if status == 1 or status == 5:
         if chi.hungry == 0 :
             death = True
-    elif status == 2 :
+    elif status == 2 or status == 3 or status == 6 or status == 7:
         if adu.hungry == 0 :
             death = True
-
+    
     #逃走フラグ
-    if status == 1 :
+    if status == 1 or status == 5:
         if chi.love < 30 : #好感度30未満でカウント増加
             runaway_count = runaway_count + 1
         elif chi.love >= 30 : #好感度30以上でカウントリセット
             runaway_count = 0
         if runaway_count == 3 : #カウント3で逃走フラグがたつ
             runaway = True
-    elif status == 2 :
+    elif status == 2 or status == 3 or status == 6 or status == 7:
         if adu.love < 30 :
             runaway_count = runaway_count + 1
         elif adu.love >= 30 :
@@ -161,18 +170,26 @@ def day_end(chi, adu):
             runaway = True
 
     # リロードすると前回の行動のクエリパラメータが残っているので，勝手に行動される
-    global status,day
     day = day + 1
     if day == 10 :
-        status = 2 
+        if status == 1 : #卵ルート
+            if evo == 0 :
+               status = 2 
+            elif evo == 1 :
+               status = 3
+        if status == 5 : #魚卵ルート
+            if evo == 0 :
+               status = 6 
+            elif evo == 1 :
+               status = 7            
     if day == 25 : #終了フラグを立てる
         grow_end = True
 
     #1日の開始時のパラメータ変動
-    if grow_child == True :
+    if status == 1 :
         chi.dust = chi.dust + 10
         chi.love = chi.love - 10
-    elif grow_adult == True :
+    elif status == 2 :
         adu.dust = adu.dust + 10
         adu.love = adu.love - 10
 
@@ -193,6 +210,12 @@ def title():
 #たまごの選択画面
 @app.route('/select', methods=["GET"])
 def select():
+    egg = request.args.get('egg')
+    if egg == 1:
+        pass
+    if egg == 2:
+        pass
+
     return render_template('select-egg.html')
 
 #たまごをあたためる画面
