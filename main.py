@@ -19,6 +19,10 @@ day = 1
 #卵=0,ひな=1,大人=2
 status = 1
 
+grow_end = False #育成終了
+death = False #餓死
+runaway = False #逃走
+runaway_count = 0 #逃走までの日数カウント
 class child :
     hungry = 0
     love = 0
@@ -66,10 +70,10 @@ def sleep_child(chi):
     elif chi.hungry > 30:
         chi.hungry = chi.hungry - 30
 
-    if chi.love >= 80:
-        chi.love = 100
-    elif chi.love < 80:
-        chi.love = chi.love + 20
+    if chi.love >= 20:
+        chi.love = chi.love - 20
+    elif chi.love < 20:
+        chi.love = 0
 
 c = child()
 
@@ -124,20 +128,54 @@ def sleep_adult(adu):
     elif adu.hungry > 30:
         adu.hungry = adu.hungry - 30
 
-    if adu.love >= 80:
-        adu.love = 100
-    elif adu.ove < 80:
-        adu.love = adu.love + 20
+    if adu.love >= 20:
+        adu.love = adu.love - 20
+    elif adu.love < 20:
+        adu.love = 0
 
 a = adult()
 
-# 日にちの更新
-def nextday():
+def day_end(chi, adu):
+    #死亡フラグ
+    if status == 1 :
+        if chi.hungry == 0 :
+            death = True
+    elif status == 2 :
+        if adu.hungry == 0 :
+            death = True
+
+    #逃走フラグ
+    if status == 1 :
+        if chi.love < 30 : #好感度30未満でカウント増加
+            runaway_count = runaway_count + 1
+        elif chi.love >= 30 : #好感度30以上でカウントリセット
+            runaway_count = 0
+        if runaway_count == 3 : #カウント3で逃走フラグがたつ
+            runaway = True
+    elif status == 2 :
+        if adu.love < 30 :
+            runaway_count = runaway_count + 1
+        elif adu.love >= 30 :
+            runaway_count = 0
+        if runaway_count == 3 :
+            runaway = True
+
     # リロードすると前回の行動のクエリパラメータが残っているので，勝手に行動される
     global status,day
     day = day + 1
     if day == 10 :
         status = 2 
+    if day == 25 : #終了フラグを立てる
+        grow_end = True
+
+    #1日の開始時のパラメータ変動
+    if grow_child == True :
+        chi.dust = chi.dust + 10
+        chi.love = chi.love - 10
+    elif grow_adult == True :
+        adu.dust = adu.dust + 10
+        adu.love = adu.love - 10
+
 
 
 app = Flask(__name__)
@@ -189,7 +227,7 @@ def growing():
             elif task == 'clean':
                 cleen_adult(a)
 
-        nextday()
+        day_end()
 
     return render_template('game.html',day=day,hungry=hungry,dust=dust,grow=grow,status=status)
 
