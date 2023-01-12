@@ -144,13 +144,13 @@ def day_start(chi, adu):
         adu.love = adu.love - 10
 
 def day_end(chi, adu):
-    if day == 1 : #2子に成長フラグを立てる
-        grow_child = True
-    if day == 9 : #大人に成長フラグを立てる
-        grow_adult = True
-        grow_child = False
-    if day == 25 : #終了フラグを立てる
-        grow_end = True
+    # if day == 1 : #2子に成長フラグを立てる
+    #     grow_child = True
+    # if day == 9 : #大人に成長フラグを立てる
+    #     grow_adult = True
+    #     grow_child = False
+    # if day == 25 : #終了フラグを立てる
+    #     grow_end = True
 
     #死亡フラグ
     if grow_child == True :
