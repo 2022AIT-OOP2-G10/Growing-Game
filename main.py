@@ -1,22 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import Flask, request, render_template
+import urllib.parse
 
-#満腹度
-hungry=0
-#好感度
-love=0
-#ほこり
-dust=0
-#成長度
-grow=0
 
-#何日目か
-day=1
+# 満腹度
+hungry = 0
+# 好感度
+love = 0
+# ほこり
+dust = 0
+# 成長度
+grow = 0
 
-#各種フラグ
-grow_child = False #卵から子
-grow_adult = False #子から大人
+# 何日目か
+day = 1
+
+#卵=0,ひな=1,大人=2
+status = 1
+
 grow_end = False #育成終了
 death = False #餓死
 runaway = False #逃走
@@ -80,6 +82,7 @@ class adult :
     love = 0
     dust = 0
 
+
 def play_adult(adu):
     if adu.hungry <= 30:
         adu.hungry = 0
@@ -99,7 +102,6 @@ def play_adult(adu):
 
 
 def food_adult(adu):
-    
     adu.hungry = 100
     if adu.love <= 100:
         adu.love = adu.love + 10
@@ -133,8 +135,39 @@ def sleep_adult(adu):
 
 a = adult()
 
-def day_start(chi, adu):
-    
+def day_end(chi, adu):
+    #死亡フラグ
+    if status == 1 :
+        if chi.hungry == 0 :
+            death = True
+    elif status == 2 :
+        if adu.hungry == 0 :
+            death = True
+
+    #逃走フラグ
+    if status == 1 :
+        if chi.love < 30 : #好感度30未満でカウント増加
+            runaway_count = runaway_count + 1
+        elif chi.love >= 30 : #好感度30以上でカウントリセット
+            runaway_count = 0
+        if runaway_count == 3 : #カウント3で逃走フラグがたつ
+            runaway = True
+    elif status == 2 :
+        if adu.love < 30 :
+            runaway_count = runaway_count + 1
+        elif adu.love >= 30 :
+            runaway_count = 0
+        if runaway_count == 3 :
+            runaway = True
+
+    # リロードすると前回の行動のクエリパラメータが残っているので，勝手に行動される
+    global status,day
+    day = day + 1
+    if day == 10 :
+        status = 2 
+    if day == 25 : #終了フラグを立てる
+        grow_end = True
+
     #1日の開始時のパラメータ変動
     if grow_child == True :
         chi.dust = chi.dust + 10
@@ -143,43 +176,9 @@ def day_start(chi, adu):
         adu.dust = adu.dust + 10
         adu.love = adu.love - 10
 
-def day_end(chi, adu):
-    # if day == 1 : #2子に成長フラグを立てる
-    #     grow_child = True
-    # if day == 9 : #大人に成長フラグを立てる
-    #     grow_adult = True
-    #     grow_child = False
-    # if day == 25 : #終了フラグを立てる
-    #     grow_end = True
-
-    #死亡フラグ
-    if grow_child == True :
-        if chi.hungry == 0 :
-            death = True
-    elif grow_adult == True :
-        if adu.hungry == 0 :
-            death = True
-
-    #逃走フラグ
-    if grow_child == True :
-        if chi.love < 30 : #好感度30未満でカウント増加
-            runaway_count = runaway_count + 1
-        elif chi.love >= 30 : #好感度30以上でカウントリセット
-            runaway_count = 0
-        if runaway_count == 3 : #カウント3で逃走フラグがたつ
-            runaway = True
-    elif grow_adult == True :
-        if adu.love < 30 :
-            runaway_count = runaway_count + 1
-        elif adu.love >= 30 :
-            runaway_count = 0
-        if runaway_count == 3 :
-            runaway = True
-
 
 
 app = Flask(__name__)
-
 
 #ホーム画面
 @app.route('/', methods=["GET"])
@@ -198,28 +197,44 @@ def select():
 
 #たまごをあたためる画面
 @app.route('/warm', methods=["GET"])
-def home_get():
+def warm():
     return render_template('warm-egg.html')
 
 #メインのゲーム画面(タスクの選択)
 @app.route('/game', methods=["GET"])
-def home_get2():
+def growing():
     # クエリを使ってGETメソッドで処理できる(都合悪そうならPOSTにも変更可)
     task=request.args.get('task')
-    if task == 'eat':
-        # ご飯を食べる関数　とかをここに書く
-        print("ご飯を食べました")
-    elif task == 'play':
-        # 遊ぶ
-        print("遊びました")
-    elif task == 'sleep':
-        # 寝る
-        print("寝ました")
-    return render_template('game.html',day=day,hungry=hungry,dust=dust,grow=grow)
+
+    if task != None:
+        if status == 1:
+            if task == 'eat':
+                food_child(c)
+            elif task == 'play':
+                play_child(c)
+            elif task == 'sleep':
+                sleep_child(c)
+            elif task == 'clean':
+                cleen_child(c)
+
+        if status == 2:
+            if task == 'eat':
+                food_adult(a)
+            elif task == 'play':
+                play_adult(a)
+            elif task == 'sleep':
+                sleep_adult(a)
+            elif task == 'clean':
+                cleen_adult(a)
+
+        day_end()
+
+    return render_template('game.html',day=day,hungry=hungry,dust=dust,grow=grow,status=status)
 
 #たまごをあたためる画面
 @app.route('/finish', methods=["GET"])
-def home_get3():
+def finish():
     return render_template('finish.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

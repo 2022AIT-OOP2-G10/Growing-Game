@@ -19,18 +19,23 @@
             <li class="nav_item"><a href="game?task=eat">ごはんをあげる</a></li>
             <li class="nav_item"><a href="game?task=play">あそぶ</a></li>
             <li class="nav_item"><a href="game?task=sleep">寝る</a></li>
+            <li class="nav_item"><a href="game?task=clean">そうじ</a></li>
           </ul>
         </nav>
       </div>
     </header>
     <h3>{{day}}日目</h3>
-    <div class="status">
+    <div class="st">
       <ul>
         <li>空腹度：{{ hungry }}</li>
         <li>部屋の綺麗度：{{dust}}</li>
         <li>成長度：{{grow}}</li>
       </ul>
     </div>
-    <img src="static/images/star_egg.png" width="25%" height="25%">
+    {%if status == 1%}
+      <img src="static/images/torinosu_hina.png" width="25%" height="25%">
+    {%else%}
+      <img src="static/images/bird_maruitori.png" width="25%" height="25%">
+    {%endif%}
   </body>
 </html>
