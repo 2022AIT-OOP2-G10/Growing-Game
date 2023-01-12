@@ -68,7 +68,6 @@ def sleep_child(chi):
 
 c = child()
 
-
 class adult :
     hungry = 0
     love = 0
@@ -135,7 +134,7 @@ app = Flask(__name__)
 @app.route('/', methods=["GET"])
 def title():
     #タイトル画面表示時に表示
-    play_child()
+    play_child(c)
     print(hungry)
     print(love)
     print(dust)
