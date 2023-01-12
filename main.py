@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from operator import truediv
 from flask import Flask, request, render_template
 
 #満腹度
@@ -14,6 +15,22 @@ grow=0
 #何日目か
 day=1
 
+#各種フラグ管理
+#死亡フラグ
+death=False
+#成長１（雛）
+child = False
+#成長２（大人）
+adult = False
+#ゲーム終了
+finish = False
+#逃げる日数カウント
+run_away = 0
+
+
+
+def egg_warm():
+    child = True
 
 def play_child():
     global hungry, love, dust
@@ -60,10 +77,10 @@ def sleep_child():
     elif hungry > 30:
         hungry = hungry - 30
 
-    if love >= 80:
-        love = 100
-    elif love < 80:
-        love = love + 20
+    if love > 20:
+        love = love - 20
+    elif love >= 0:
+        love = 0
 
 
 def play_adult():
@@ -113,10 +130,53 @@ def sleep_adult():
     elif hungry > 30:
         hungry = hungry - 30
 
-    if love >= 80:
-        love = 100
-    elif love < 80:
-        love = love + 20
+    if love > 20:
+        love = love - 20
+    elif love >= 0:
+        love = 0
+
+def day_start():
+    global hungry, love, dust
+    #日数をカウント
+    day = day + 1
+
+    #ホコリ10上昇
+    dust = dust + 10
+
+    #好感度10減少
+    love = love - 10
+
+    if dust >= 60:
+        love = love - 20
+    
+    if love < 30:#好感度が30未満だったら脱走までの日数カウント
+        run_away = run_away + 1
+
+        if run_away >= 3:#3日連続30以下だったら脱走
+            run_away#脱走させる
+
+    elif love >=30:#好感度が30以上だったらカウントリセット
+        run_away = 0
+
+    
+
+    if hungry == 0:
+        death = True
+
+    if child == True:
+        child = True #エラー防止用の１行です
+        #画像を変化する(雛)
+
+    if day == 11:
+        adult = True
+        #画像変化（大人）
+    
+    if day == 26:
+        finish = True
+        #終了
+
+
+
 
 
 app = Flask(__name__)
