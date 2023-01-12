@@ -69,57 +69,63 @@ def sleep_child(chi):
 c = child()
 
 
-def play_adult():
-    global hungry, love, dust
-    if hungry <= 30:
-        hungry = 0
-    elif hungry < 30:
-        hungry = hungry - 30
-
-    if love >= 85:
-        love = 100
-    elif love < 85:
-        love = love + 15
-
-    if dust >= 60:
-        dust = 100
-    elif dust < 60:
-        dust = dust + 40
-
-
-def food_adult():
-    global hungry, love, dust
-    hungry = 100
-    if love <= 100:
-        love = love + 10
-    elif love >= 100:
-        love = 100
-
-
-def cleen_adult():
-    global hungry, love, dust
-    if hungry <= 30:
-        hungry = 0
-    elif hungry > 30:
-        hungry = hungry - 30
-    
-    if love >= 80:
-        love = 100
-    elif love < 80:
-        love = love + 80
+class adult :
+    hungry = 0
+    love = 0
     dust = 0
 
-def sleep_adult():
-    global hungry, love, dust
-    if hungry <= 30:
-        hungry = 0
-    elif hungry > 30:
-        hungry = hungry - 30
+def play_adult(adu):
+    if adu.hungry <= 30:
+        adu.hungry = 0
+    elif adu.hungry > 30:
+        adu.hungry = adu.hungry - 30
 
-    if love >= 80:
-        love = 100
-    elif love < 80:
-        love = love + 20
+    if adu.love >= 85:
+        adu.love = 100
+    elif adu.love < 85:
+        adu.love = adu.love + 15
+
+    if adu.dust >= 60:
+        adu.dust = 100
+    elif adu.dust < 60:
+        adu.dust = adu.dust + 40
+        
+
+
+def food_adult(adu):
+    
+    adu.hungry = 100
+    if adu.love <= 100:
+        adu.love = adu.love + 10
+    elif adu.love >= 100:
+        adu.love = 100
+
+
+def cleen_adult(adu):
+    if adu.hungry <= 30:
+        adu.hungry = 0
+    elif adu.hungry > 30:
+        adu.hungry = adu.hungry - 30
+    
+    if adu.love >= 80:
+        adu.love = 100
+    elif adu.love < 80:
+        adu.love = adu.love + 80
+    adu.dust = 0
+
+def sleep_adult(adu):
+    
+    if adu.hungry <= 30:
+        adu.hungry = 0
+    elif adu.hungry > 30:
+        adu.hungry = adu.hungry - 30
+
+    if adu.love >= 80:
+        adu.love = 100
+    elif adu.ove < 80:
+        adu.love = adu.love + 20
+
+a = adult()
 
 
 app = Flask(__name__)
