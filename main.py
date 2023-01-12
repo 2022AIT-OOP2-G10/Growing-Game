@@ -136,6 +136,7 @@ def sleep_adult(adu):
 a = adult()
 
 def day_end(chi, adu):
+    global status,day
     #死亡フラグ
     if status == 1 :
         if chi.hungry == 0 :
@@ -161,7 +162,6 @@ def day_end(chi, adu):
             runaway = True
 
     # リロードすると前回の行動のクエリパラメータが残っているので，勝手に行動される
-    global status,day
     day = day + 1
     if day == 10 :
         status = 2 
@@ -169,10 +169,10 @@ def day_end(chi, adu):
         grow_end = True
 
     #1日の開始時のパラメータ変動
-    if grow_child == True :
+    if status == 1 :
         chi.dust = chi.dust + 10
         chi.love = chi.love - 10
-    elif grow_adult == True :
+    elif status == 2 :
         adu.dust = adu.dust + 10
         adu.love = adu.love - 10
 
