@@ -14,56 +14,59 @@ grow=0
 #何日目か
 day=1
 
-
-def play_child():
-    global hungry, love, dust
-    if hungry <= 40:
-        hungry = 0
-    elif hungry > 40:
-        hungry = hungry - 40
-
-    if love >= 80:
-        love = 100
-    elif love < 80:
-        love = love + 20
-
-    if dust >= 50:
-        dust = 100
-    elif dust < 50:
-        dust = dust + 50
-    
-def food_child():
-    global hungry, love, dust
-    hungry = 100
-    if love <= 100:
-        love = love + 10
-    elif love >= 100:
-        love = 100
-  
-def cleen_child():
-    global hungry, love, dust
-    if hungry <= 40:
-        hungry = 0
-    elif hungry > 40:
-        hungry = hungry - 40
-    
-    if love >= 90:
-        love = 100
-    elif love < 90:
-        love = love + 90
+class child :
+    hungry = 0
+    love = 0
     dust = 0
 
-def sleep_child():
-    global hungry, love, dust
-    if hungry <= 30:
-        hungry = 0
-    elif hungry > 30:
-        hungry = hungry - 30
+def play_child(chi):
+    if chi.hungry <= 40:
+        chi.hungry = 0
+    elif chi.hungry > 40:
+        chi.hungry = chi.hungry - 40
 
-    if love >= 80:
-        love = 100
-    elif love < 80:
-        love = love + 20
+    if chi.love >= 80:
+        chi.love = 100
+    elif chi.love < 80:
+        chi.love = love + 20
+
+    if chi.dust >= 50:
+        chi.dust = 100
+    elif chi.dust < 50:
+        chi.dust = chi.dust + 50
+
+    
+def food_child(chi):
+    chi.hungry = 100
+    if chi.love <= 100:
+        chi.love = chi.love + 10
+    elif chi.love >= 100:
+        chi.love = 100
+  
+def cleen_child(chi):
+    if chi.hungry <= 40:
+        chi.hungry = 0
+    elif chi.hungry > 40:
+        chi.hungry = chi.hungry - 40
+    
+    if chi.love >= 90:
+        chi.love = 100
+    elif chi.love < 90:
+        chi.love = chi.love + 90
+    chi.dust = 0
+
+def sleep_child(chi):
+    if chi.hungry <= 30:
+        chi.hungry = 0
+    elif chi.hungry > 30:
+        chi.hungry = chi.hungry - 30
+
+    if chi.love >= 80:
+        chi.love = 100
+    elif chi.love < 80:
+        chi.love = chi.love + 20
+
+c = child()
 
 
 def play_adult():
