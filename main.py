@@ -145,6 +145,7 @@ def day_end(chi, adu):
     if food_count >= 6:
         evo = 1
 
+
     #死亡フラグ
     if status == 1 or status == 5:
         if chi.hungry == 0 :
