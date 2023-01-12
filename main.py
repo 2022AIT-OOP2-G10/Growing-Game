@@ -134,7 +134,6 @@ def sleep_adult(adu):
 a = adult()
 
 def day_start(chi, adu):
-    day = day + 1 #日数経過
     
     #1日の開始時のパラメータ変動
     if grow_child == True :
