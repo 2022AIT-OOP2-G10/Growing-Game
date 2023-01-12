@@ -19,114 +19,117 @@ day = 1
 #卵=0,ひな=1,大人=2
 status = 1
 
-# 遊ぶ(ひな)
-def play_child():
-    global hungry, love, dust
-    if hungry <= 40:
-        hungry = 0
-    elif hungry > 40:
-        hungry = hungry - 40
-
-    if love >= 80:
-        love = 100
-    elif love < 80:
-        love = love + 20
-
-    if dust >= 50:
-        dust = 100
-    elif dust < 50:
-        dust = dust + 50
-    
-
-# ごはん(ひな)
-def food_child():
-    global hungry, love, dust
-    hungry = 100
-    if love <= 100:
-        love = love + 10
-    elif love >= 100:
-        love = 100
-
-# そうじ(ひな)
-def cleen_child():
-    global hungry, love, dust
-    if hungry <= 40:
-        hungry = 0
-    elif hungry > 40:
-        hungry = hungry - 40
-    
-    if love >= 90:
-        love = 100
-    elif love < 90:
-        love = love + 90
+class child :
+    hungry = 0
+    love = 0
     dust = 0
 
-# ねる(ひな)
-def sleep_child():
-    global hungry, love, dust
-    if hungry <= 30:
-        hungry = 0
-    elif hungry > 30:
-        hungry = hungry - 30
+def play_child(chi):
+    if chi.hungry <= 40:
+        chi.hungry = 0
+    elif chi.hungry > 40:
+        chi.hungry = chi.hungry - 40
 
-    if love >= 80:
-        love = 100
-    elif love < 80:
-        love = love + 20
+    if chi.love >= 80:
+        chi.love = 100
+    elif chi.love < 80:
+        chi.love = love + 20
 
-# 遊ぶ(大人)
-def play_adult():
-    global hungry, love, dust
-    if hungry <= 30:
-        hungry = 0
-    elif hungry < 30:
-        hungry = hungry - 30
+    if chi.dust >= 50:
+        chi.dust = 100
+    elif chi.dust < 50:
+        chi.dust = chi.dust + 50
 
-    if love >= 85:
-        love = 100
-    elif love < 85:
-        love = love + 15
-
-    if dust >= 60:
-        dust = 100
-    elif dust < 60:
-        dust = dust + 40
-
-# ごはん（大人）
-def food_adult():
-    global hungry, love, dust
-    hungry = 100
-    if love <= 100:
-        love = love + 10
-    elif love >= 100:
-        love = 100
-
-# そうじ（大人）
-def cleen_adult():
-    global hungry, love, dust
-    if hungry <= 30:
-        hungry = 0
-    elif hungry > 30:
-        hungry = hungry - 30
     
-    if love >= 80:
-        love = 100
-    elif love < 80:
-        love = love + 80
+def food_child(chi):
+    chi.hungry = 100
+    if chi.love <= 100:
+        chi.love = chi.love + 10
+    elif chi.love >= 100:
+        chi.love = 100
+  
+def cleen_child(chi):
+    if chi.hungry <= 40:
+        chi.hungry = 0
+    elif chi.hungry > 40:
+        chi.hungry = chi.hungry - 40
+    
+    if chi.love >= 90:
+        chi.love = 100
+    elif chi.love < 90:
+        chi.love = chi.love + 90
+    chi.dust = 0
+
+def sleep_child(chi):
+    if chi.hungry <= 30:
+        chi.hungry = 0
+    elif chi.hungry > 30:
+        chi.hungry = chi.hungry - 30
+
+    if chi.love >= 80:
+        chi.love = 100
+    elif chi.love < 80:
+        chi.love = chi.love + 20
+
+c = child()
+
+class adult :
+    hungry = 0
+    love = 0
     dust = 0
 
-# ねる（大人）
-def sleep_adult():
-    global hungry, love, dust
-    if hungry <= 30:
-        hungry = 0
-    elif hungry > 30:
-        hungry = hungry - 30
 
-    if love >= 80:
-        love = 100
-    elif love < 80:
-        love = love + 20
+def play_adult(adu):
+    if adu.hungry <= 30:
+        adu.hungry = 0
+    elif adu.hungry > 30:
+        adu.hungry = adu.hungry - 30
+
+    if adu.love >= 85:
+        adu.love = 100
+    elif adu.love < 85:
+        adu.love = adu.love + 15
+
+    if adu.dust >= 60:
+        adu.dust = 100
+    elif adu.dust < 60:
+        adu.dust = adu.dust + 40
+        
+
+
+def food_adult(adu):
+    adu.hungry = 100
+    if adu.love <= 100:
+        adu.love = adu.love + 10
+    elif adu.love >= 100:
+        adu.love = 100
+
+
+def cleen_adult(adu):
+    if adu.hungry <= 30:
+        adu.hungry = 0
+    elif adu.hungry > 30:
+        adu.hungry = adu.hungry - 30
+    
+    if adu.love >= 80:
+        adu.love = 100
+    elif adu.love < 80:
+        adu.love = adu.love + 80
+    adu.dust = 0
+
+def sleep_adult(adu):
+    
+    if adu.hungry <= 30:
+        adu.hungry = 0
+    elif adu.hungry > 30:
+        adu.hungry = adu.hungry - 30
+
+    if adu.love >= 80:
+        adu.love = 100
+    elif adu.ove < 80:
+        adu.love = adu.love + 20
+
+a = adult()
 
 # 日にちの更新
 def nextday():
@@ -143,7 +146,7 @@ app = Flask(__name__)
 @app.route('/', methods=["GET"])
 def title():
     #タイトル画面表示時に表示
-    play_child()
+    play_child(c)
     print(hungry)
     print(love)
     print(dust)
