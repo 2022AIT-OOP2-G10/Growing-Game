@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>育成ゲーム</title>
+    <link rel="stylesheet" href="static/css/game.css" type="text/css">
+  </head>
+  <body>
+    <header>
+      <div class="nav">
+        <div class="bg_pattern Rhombus"></div>
+        <!-- ハンバーガーメニューの表示・非表示を切り替えるチェックボックス -->
+        <input id="drawer_input" class="drawer_hidden" type="checkbox">
+        <!-- ハンバーガーアイコン -->
+        <label for="drawer_input" class="drawer_open"><span></span></label>
+        <!-- メニュー -->
+        <nav class="nav_content">
+          <ul class="nav_list">
+            <li class="nav_item"><a href="game?task=eat">ごはんをあげる</a></li>
+            <li class="nav_item"><a href="game?task=play">あそぶ</a></li>
+            <li class="nav_item"><a href="game?task=sleep">寝る</a></li>
+            <li class="nav_item"><a href="game?task=clean">そうじ</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <h3>{{day}}日目</h3>
+    <div class="st">
+      <ul>
+        <li>空腹度：{{ hungry }}</li>
+        <li>部屋の綺麗度：{{dust}}</li>
+        <li>成長度：{{grow}}</li>
+      </ul>
+    </div>
+    {%if status == 1%}
+      <img src="static/images/torinosu_hina.png" width="25%" height="25%">
+    {%else%}
+      <img src="static/images/bird_maruitori.png" width="25%" height="25%">
+    {%endif%}
+  </body>
+</html>
