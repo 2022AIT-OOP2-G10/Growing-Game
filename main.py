@@ -193,6 +193,12 @@ def title():
 #たまごの選択画面
 @app.route('/select', methods=["GET"])
 def select():
+    egg = request.args.get('egg')
+    if egg == 1:
+        pass
+    if egg == 2:
+        pass
+
     return render_template('select-egg.html')
 
 #たまごをあたためる画面
