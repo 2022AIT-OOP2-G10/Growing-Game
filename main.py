@@ -251,7 +251,7 @@ def growing():
             elif task == 'clean':
                 cleen_adult(a)
 
-        day_end()
+        day_end(c,a)
 
     return render_template('game.html',day=day,hungry=hungry,dust=dust,grow=grow,status=status)
 
