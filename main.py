@@ -50,9 +50,9 @@ def play_child(chi):
     
 def food_child(chi):
     chi.hungry = 100
-    if chi.love <= 100:
+    if chi.love <= 90:
         chi.love = chi.love + 10
-    elif chi.love >= 100:
+    elif chi.love > 90:
         chi.love = 100
   
 def cleen_child(chi):
@@ -139,12 +139,10 @@ def sleep_adult(adu):
 a = adult()
 
 def day_end(chi, adu):
-    global status,day
-
+    global status, day, food_count, evo, grow_end, death, runaway, runaway_count
     #成長分岐
     if food_count >= 6:
         evo = 1
-
 
     #死亡フラグ
     if status == 1 or status == 5:
@@ -188,13 +186,23 @@ def day_end(chi, adu):
 
     #1日の開始時のパラメータ変動
     if status == 1 :
-        chi.dust = chi.dust + 10
-        chi.love = chi.love - 10
+        if chi.dust <= 90:
+            chi.dust = chi.dust + 10
+        else:
+            chi.dust = 100
+        if chi.love >= 10:
+            chi.love = chi.love - 10
+        else:
+            chi.love = 0
     elif status == 2 :
-        adu.dust = adu.dust + 10
-        adu.love = adu.love - 10
-
-
+        if adu.dust <= 90:
+            adu.dust = adu.dust + 10
+        else:
+            adu.dust = 100
+        if adu.love >= 10:
+            adu.love = adu.love - 10
+        else:
+            adu.love = 0
 
 app = Flask(__name__)
 
@@ -203,9 +211,6 @@ app = Flask(__name__)
 def title():
     #タイトル画面表示時に表示
     play_child(c)
-    print(hungry)
-    print(love)
-    print(dust)
     return render_template('title.html')
 
 #たまごの選択画面
@@ -241,6 +246,9 @@ def growing():
             elif task == 'clean':
                 cleen_child(c)
 
+            day_end(c,a)
+            return render_template('game.html',day=day,bird=c,status=status)
+
         if status == 2:
             if task == 'eat':
                 food_adult(a)
@@ -251,9 +259,9 @@ def growing():
             elif task == 'clean':
                 cleen_adult(a)
 
-        day_end(c,a)
-
-    return render_template('game.html',day=day,hungry=hungry,dust=dust,grow=grow,status=status)
+            day_end(c,a)
+            return render_template('game.html',day=day,bird=a,status=status)
+    return render_template('game.html',day=day,bird=a,status=status)
 
 #たまごをあたためる画面
 @app.route('/finish', methods=["GET"])
