@@ -217,10 +217,11 @@ def title():
 @app.route('/select', methods=["GET"])
 def select():
     egg = request.args.get('egg')
-    if egg == 1:
-        pass
-    if egg == 2:
-        pass
+    if egg == '1':
+        # 何かしらの処理    
+        return redirect(url_for('growing'))
+    if egg == '2':
+        return redirect(url_for('growing'))
 
     return render_template('select-egg.html')
 
