@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, url_for, redirect
 import urllib.parse
 
 
@@ -260,6 +260,10 @@ def growing():
                 cleen_adult(a)
 
             day_end(c,a)
+            
+            if day > 25:
+                return redirect(url_for('finish'))
+            
             return render_template('game.html',day=day,bird=a,status=status)
     return render_template('game.html',day=day,bird=a,status=status)
 
@@ -267,16 +271,7 @@ def growing():
 #たまごをあたためる画面
 @app.route('/finish', methods=["GET"])
 def finish():
-    task=request.args.get('task')
-    
-    if task == 'eat':
-        food_adult(a)
-    elif task == 'play':
-        play_adult(a)
-    elif task == 'sleep':
-        sleep_adult(a)
-    elif task == 'clean':
-        cleen_adult(a)
+
     
     return render_template('finish.html')
 
