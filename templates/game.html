@@ -17,10 +17,17 @@
         <!-- メニュー -->
         <nav class="nav_content">
           <ul class="nav_list">
+            {%if day >= 25%}
+            <li class="nav_item"><a href="finish?task=eat">ごはんをあげる</a></li>
+            <li class="nav_item"><a href="finish?task=play">あそぶ</a></li>
+            <li class="nav_item"><a href="finish?task=sleep">寝る</a></li>
+            <li class="nav_item"><a href="finish?task=clean">そうじ</a></li>
+            {%else%}
             <li class="nav_item"><a href="game?task=eat">ごはんをあげる</a></li>
             <li class="nav_item"><a href="game?task=play">あそぶ</a></li>
             <li class="nav_item"><a href="game?task=sleep">寝る</a></li>
             <li class="nav_item"><a href="game?task=clean">そうじ</a></li>
+            {%endif%}
           </ul>
         </nav>
       </div>

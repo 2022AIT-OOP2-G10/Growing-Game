@@ -263,9 +263,21 @@ def growing():
             return render_template('game.html',day=day,bird=a,status=status)
     return render_template('game.html',day=day,bird=a,status=status)
 
+
 #たまごをあたためる画面
 @app.route('/finish', methods=["GET"])
 def finish():
+    task=request.args.get('task')
+    
+    if task == 'eat':
+        food_adult(a)
+    elif task == 'play':
+        play_adult(a)
+    elif task == 'sleep':
+        sleep_adult(a)
+    elif task == 'clean':
+        cleen_adult(a)
+    
     return render_template('finish.html')
 
 if __name__ == '__main__':
