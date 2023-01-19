@@ -244,8 +244,13 @@ def growing():
             sleep_child(c)
         elif task == 'clean':
             cleen_child(c)
+        else:
+            return render_template('game.html',day=day,bird=c,status=status)
 
         day_end(c,a)
+        if death or runaway:
+            return redirect(url_for('finish'))
+        
         return render_template('game.html',day=day,bird=c,status=status)
 
     if status == 2 or status == 6:
@@ -257,18 +262,22 @@ def growing():
             sleep_adult(a)
         elif task == 'clean':
             cleen_adult(a)
+        else:
+            return render_template('game.html',day=day,bird=a,status=status)
 
         day_end(c,a)
         
-        if day > 25:
+        if day > 25 or death or runaway:
             return redirect(url_for('finish'))
             
         return render_template('game.html',day=day,bird=a,status=status)
+    
+    return render_template('game.html',day=day,status=status)
 
 #たまごをあたためる画面
 @app.route('/finish', methods=["GET"])
 def finish():
-    return render_template('finish.html')
+    return render_template('finish.html',death=death, runaway=runaway, status=status)
 
 if __name__ == '__main__':
     app.run(debug=True)
