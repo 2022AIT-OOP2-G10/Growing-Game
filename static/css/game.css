@@ -142,3 +142,13 @@ ul{
 li{
   list-style:none;
 }
+
+/* 満腹度．好感度，ほこりのバー */
+progress {
+  width: 200px;
+  height: 20px;
+  background-color: gainsboro;
+}
+progress::-webkit-progress-value {
+  background-color: cyan;
+}
