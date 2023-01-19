@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, url_for, redirect
 import urllib.parse
 
 
@@ -217,10 +217,11 @@ def title():
 @app.route('/select', methods=["GET"])
 def select():
     egg = request.args.get('egg')
-    if egg == 1:
-        pass
-    if egg == 2:
-        pass
+    if egg == '1':
+        # 何かしらの処理    
+        return redirect(url_for('growing'))
+    if egg == '2':
+        return redirect(url_for('growing'))
 
     return render_template('select-egg.html')
 
@@ -235,33 +236,35 @@ def growing():
     # クエリを使ってGETメソッドで処理できる(都合悪そうならPOSTにも変更可)
     task=request.args.get('task')
 
-    if task != None:
-        if status == 1:
-            if task == 'eat':
-                food_child(c)
-            elif task == 'play':
-                play_child(c)
-            elif task == 'sleep':
-                sleep_child(c)
-            elif task == 'clean':
-                cleen_child(c)
+    if status == 1:
+        if task == 'eat':
+            food_child(c)
+        elif task == 'play':
+            play_child(c)
+        elif task == 'sleep':
+            sleep_child(c)
+        elif task == 'clean':
+            cleen_child(c)
 
-            day_end(c,a)
-            return render_template('game.html',day=day,bird=c,status=status)
+        day_end(c,a)
+        return render_template('game.html',day=day,bird=c,status=status)
 
-        if status == 2:
-            if task == 'eat':
-                food_adult(a)
-            elif task == 'play':
-                play_adult(a)
-            elif task == 'sleep':
-                sleep_adult(a)
-            elif task == 'clean':
-                cleen_adult(a)
+    if status == 2:
+        if task == 'eat':
+            food_adult(a)
+        elif task == 'play':
+            play_adult(a)
+        elif task == 'sleep':
+            sleep_adult(a)
+        elif task == 'clean':
+            cleen_adult(a)
 
-            day_end(c,a)
-            return render_template('game.html',day=day,bird=a,status=status)
-    return render_template('game.html',day=day,bird=a,status=status)
+        day_end(c,a)
+        
+        if day > 25:
+            return redirect(url_for('finish'))
+            
+        return render_template('game.html',day=day,bird=a,status=status)
 
 #たまごをあたためる画面
 @app.route('/finish', methods=["GET"])
