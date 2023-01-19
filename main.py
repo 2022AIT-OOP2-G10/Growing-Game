@@ -213,7 +213,6 @@ app = Flask(__name__)
 @app.route('/', methods=["GET"])
 def title():
     #タイトル画面表示時に表示
-    play_child(c)
     return render_template('title.html')
 
 #たまごの選択画面
