@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import Flask, request, render_template, url_for, redirect
-import urllib.parse
-
 
 # 満腹度
 hungry = 0
@@ -168,7 +166,6 @@ def day_end(chi, adu):
         if runaway_count == 3 :
             runaway = True
 
-    # リロードすると前回の行動のクエリパラメータが残っているので，勝手に行動される
     day = day + 1
     if day == 10 :
         if status == 1 : #卵ルート
@@ -181,11 +178,12 @@ def day_end(chi, adu):
                status = 6 
             elif evo == 1 :
                status = 7            
+    
     if day == 25 : #終了フラグを立てる
         grow_end = True
 
     #1日の開始時のパラメータ変動
-    if status == 1 :
+    if status == 1 or status == 5 :
         if chi.dust <= 90:
             chi.dust = chi.dust + 10
         else:
@@ -194,7 +192,7 @@ def day_end(chi, adu):
             chi.love = chi.love - 10
         else:
             chi.love = 0
-    elif status == 2 :
+    elif status == 2 or status == 6:
         if adu.dust <= 90:
             adu.dust = adu.dust + 10
         else:
@@ -218,9 +216,10 @@ def title():
 def select():
     egg = request.args.get('egg')
     if egg == '1':
-        # 何かしらの処理    
+        status = 1
         return redirect(url_for('growing'))
     if egg == '2':
+        status = 5
         return redirect(url_for('growing'))
 
     return render_template('select-egg.html')
@@ -236,7 +235,7 @@ def growing():
     # クエリを使ってGETメソッドで処理できる(都合悪そうならPOSTにも変更可)
     task=request.args.get('task')
 
-    if status == 1:
+    if status == 1 or status == 5:
         if task == 'eat':
             food_child(c)
         elif task == 'play':
@@ -249,7 +248,7 @@ def growing():
         day_end(c,a)
         return render_template('game.html',day=day,bird=c,status=status)
 
-    if status == 2:
+    if status == 2 or status == 6:
         if task == 'eat':
             food_adult(a)
         elif task == 'play':
