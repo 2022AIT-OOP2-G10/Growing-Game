@@ -179,6 +179,9 @@ def day_end(chi, adu):
     if day == 10 :
 
         status = status+evo 
+        adu.hungry = chi.hungry
+        adu.dust = chi.dust
+        adu.love = chi.love
         food_count=0
 
     if day == 25 : #終了フラグを立てる
