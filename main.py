@@ -234,16 +234,21 @@ def warm():
 def growing():
     # クエリを使ってGETメソッドで処理できる(都合悪そうならPOSTにも変更可)
     task=request.args.get('task')
+    message = ''
 
     if status == 1 or status == 5:
         if task == 'eat':
             food_child(c)
+            message = 'ご飯を食べました'
         elif task == 'play':
             play_child(c)
+            message = '遊びました'
         elif task == 'sleep':
             sleep_child(c)
+            message = '寝ました'
         elif task == 'clean':
             cleen_child(c)
+            message = 'そうじをしました'
         else:
             return render_template('game.html',day=day,bird=c,status=status)
 
@@ -251,17 +256,21 @@ def growing():
         if death or runaway:
             return redirect(url_for('finish'))
         
-        return render_template('game.html',day=day,bird=c,status=status)
+        return render_template('game.html',day=day,bird=c,status=status,message=message)
 
     if status == 2 or status == 6:
         if task == 'eat':
             food_adult(a)
+            message = 'ご飯を食べました'
         elif task == 'play':
             play_adult(a)
+            message = '遊びました'
         elif task == 'sleep':
             sleep_adult(a)
+            message = '寝ました'
         elif task == 'clean':
             cleen_adult(a)
+            message = 'そうじをしました'
         else:
             return render_template('game.html',day=day,bird=a,status=status)
 
@@ -272,7 +281,7 @@ def growing():
             
         return render_template('game.html',day=day,bird=a,status=status)
     
-    return render_template('game.html',day=day,status=status)
+    return render_template('game.html',day=day,status=status,message=message)
 
 #たまごをあたためる画面
 @app.route('/finish', methods=["GET"])
