@@ -28,9 +28,9 @@
     <h3>{{day}}日目</h3>
     <div class="st">
       <ul>
-        <li>満腹度：{{ bird.hungry }}</li>
-        <li>ほこり：{{ bird.dust }}</li>
-        <li>好感度：{{ bird.love }}</li>
+        <li>満腹度 <progress max="100" value={{ bird.hungry }}>{{ bird.hungry }}</progress></li>
+        <li>ほこり <progress max="100" value={{ bird.dust }}>{{ bird.dust }}</progress></li>
+        <li>好感度 <progress max="100" value={{ bird.love }}>{{ bird.love }}</progress></li> 
       </ul>
     </div>
     {%if status == 1%}
