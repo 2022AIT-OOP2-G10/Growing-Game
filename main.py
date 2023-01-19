@@ -24,6 +24,7 @@ grow_end = False #育成終了
 death = False #餓死
 runaway = False #逃走
 runaway_count = 0 #逃走までの日数カウント
+
 class child :
     hungry = 0
     love = 0
@@ -38,7 +39,7 @@ def play_child(chi):
     if chi.love >= 80:
         chi.love = 100
     elif chi.love < 80:
-        chi.love = love + 20
+        chi.love = chi.love + 20
 
     if chi.dust >= 50:
         chi.dust = 100
@@ -64,7 +65,7 @@ def cleen_child(chi):
     if chi.love >= 90:
         chi.love = 100
     elif chi.love < 90:
-        chi.love = chi.love + 90
+        chi.love = chi.love + 10
     chi.dust = 0
 
 def sleep_child(chi):
@@ -103,14 +104,13 @@ def play_adult(adu):
         adu.dust = adu.dust + 40
         
 
-
 def food_adult(adu):
     global food_count
     food_count=food_count+1
     adu.hungry = 100
-    if adu.love <= 100:
+    if adu.love <= 90:
         adu.love = adu.love + 10
-    elif adu.love >= 100:
+    elif adu.love > 90:
         adu.love = 100
 
 
@@ -123,7 +123,7 @@ def cleen_adult(adu):
     if adu.love >= 80:
         adu.love = 100
     elif adu.love < 80:
-        adu.love = adu.love + 80
+        adu.love = adu.love + 20
     adu.dust = 0
 
 def sleep_adult(adu):
