@@ -235,41 +235,60 @@ def warm():
 def growing():
     # クエリを使ってGETメソッドで処理できる(都合悪そうならPOSTにも変更可)
     task=request.args.get('task')
+    message = ''
 
     if status == 1:
         if task == 'eat':
             food_child(c)
+            message = 'ご飯を食べました'
         elif task == 'play':
             play_child(c)
+            message = '遊びました'
         elif task == 'sleep':
             sleep_child(c)
+            message = '寝ました'
         elif task == 'clean':
             cleen_child(c)
+            message = '掃除しました'
+        else:
+            return render_template('game.html',day=day,bird=c,status=status)
 
         day_end(c,a)
-        return render_template('game.html',day=day,bird=c,status=status)
+        if death or runaway:
+            return redirect(url_for('finish'))
+    
+        return render_template('game.html',day=day,bird=c,status=status,message=message)
 
     if status == 2:
         if task == 'eat':
             food_adult(a)
+            message = 'ご飯を食べました'
         elif task == 'play':
             play_adult(a)
+            message = '遊びました'
         elif task == 'sleep':
             sleep_adult(a)
+            message = '寝ました'
         elif task == 'clean':
             cleen_adult(a)
+            message = '掃除しました'
+        else:
+            return render_template('game.html',day=day,bird=a,status=status)
 
         day_end(c,a)
         
-        if day > 25:
+        if day > 25 or death or runaway:
             return redirect(url_for('finish'))
             
         return render_template('game.html',day=day,bird=a,status=status)
 
+    return render_template('game.html',day=day,status=status,message=message)
+        
+
 #たまごをあたためる画面
 @app.route('/finish', methods=["GET"])
 def finish():
-    return render_template('finish.html')
+    return render_template('finish.html',death=death, runaway=runaway, status=status)
 
 if __name__ == '__main__':
     app.run(debug=True)
