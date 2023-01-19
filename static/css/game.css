@@ -151,6 +151,7 @@ ul{
 li{
   list-style:none;
 }
+
 .st {
   padding: 0.5em 1em;
   margin: 2em auto;
@@ -169,3 +170,15 @@ li{
   padding: 0;
   height: auto;
 } */
+
+
+/* 満腹度．好感度，ほこりのバー */
+progress {
+  width: 200px;
+  height: 20px;
+  background-color: gainsboro;
+}
+progress::-webkit-progress-value {
+  background-color: cyan;
+}
+
