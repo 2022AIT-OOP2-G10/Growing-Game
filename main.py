@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import Flask, request, render_template, url_for, redirect
-import urllib.parse
-
 
 # 満腹度
 hungry = 0
@@ -16,8 +14,6 @@ grow = 0
 # 何日目か
 day = 1
 
-#卵=0,ひな=1,大人(a)=2, 大人(b)=3
-#魚卵=4, ひな=5, 大人(a)=6, 大人(b)=7
 status = 1
 
 food_count = 0 #ごはんを選択した数
@@ -50,6 +46,8 @@ def play_child(chi):
 
     
 def food_child(chi):
+    global food_count
+    food_count=food_count+1
     chi.hungry = 100
     if chi.love <= 90:
         chi.love = chi.love + 10
@@ -105,6 +103,8 @@ def play_adult(adu):
         
 
 def food_adult(adu):
+    global food_count
+    food_count=food_count+1
     adu.hungry = 100
     if adu.love <= 90:
         adu.love = adu.love + 10
@@ -141,26 +141,33 @@ a = adult()
 def day_end(chi, adu):
     global status, day, food_count, evo, grow_end, death, runaway, runaway_count
     #成長分岐
-    if food_count >= 6:
-        evo = 1
-
+    if status==1 or status==6 or status ==3 or status ==8:
+        if food_count >= 6:
+            evo = 1
+        elif food_count < 6:
+            evo = 2
+    elif status==2 or status==7:
+        if food_count >= 6:
+            evo = 2
+        elif food_count < 6:
+            evo = 3
     #死亡フラグ
-    if status == 1 or status == 5:
+    if status == 1 or status == 6:
         if chi.hungry == 0 :
             death = True
-    elif status == 2 or status == 3 or status == 6 or status == 7:
+    else:
         if adu.hungry == 0 :
             death = True
     
     #逃走フラグ
-    if status == 1 or status == 5:
+    if status == 1 or status == 6:
         if chi.love < 30 : #好感度30未満でカウント増加
             runaway_count = runaway_count + 1
         elif chi.love >= 30 : #好感度30以上でカウントリセット
             runaway_count = 0
         if runaway_count == 3 : #カウント3で逃走フラグがたつ
             runaway = True
-    elif status == 2 or status == 3 or status == 6 or status == 7:
+    else:
         if adu.love < 30 :
             runaway_count = runaway_count + 1
         elif adu.love >= 30 :
@@ -168,24 +175,20 @@ def day_end(chi, adu):
         if runaway_count == 3 :
             runaway = True
 
-    # リロードすると前回の行動のクエリパラメータが残っているので，勝手に行動される
     day = day + 1
     if day == 10 :
-        if status == 1 : #卵ルート
-            if evo == 0 :
-               status = 2 
-            elif evo == 1 :
-               status = 3
-        if status == 5 : #魚卵ルート
-            if evo == 0 :
-               status = 6 
-            elif evo == 1 :
-               status = 7            
+
+        status = status+evo 
+        food_count=0
+
     if day == 25 : #終了フラグを立てる
+        status = status+evo 
         grow_end = True
 
     #1日の開始時のパラメータ変動
-    if status == 1 :
+
+    if status == 1 or 6 :
+
         if chi.dust <= 90:
             chi.dust = chi.dust + 10
         else:
@@ -194,7 +197,7 @@ def day_end(chi, adu):
             chi.love = chi.love - 10
         else:
             chi.love = 0
-    elif status == 2 :
+    elif status == 2 or status == 6:
         if adu.dust <= 90:
             adu.dust = adu.dust + 10
         else:
@@ -216,11 +219,14 @@ def title():
 #たまごの選択画面
 @app.route('/select', methods=["GET"])
 def select():
+    global status
     egg = request.args.get('egg')
     if egg == '1':
-        # 何かしらの処理    
+        # 何かしらの処理
+        status=6    
         return redirect(url_for('growing'))
     if egg == '2':
+        status=1
         return redirect(url_for('growing'))
 
     return render_template('select-egg.html')
@@ -237,10 +243,12 @@ def growing():
     task=request.args.get('task')
     message = ''
 
-    if status == 1:
+    if status == 1 or 6:
+
+
         if task == 'eat':
             food_child(c)
-            message = 'ご飯を食べました'
+            message = 'ごはんを食べました'
         elif task == 'play':
             play_child(c)
             message = '遊びました'
@@ -249,20 +257,23 @@ def growing():
             message = '寝ました'
         elif task == 'clean':
             cleen_child(c)
+
             message = '掃除しました'
+
         else:
             return render_template('game.html',day=day,bird=c,status=status)
 
         day_end(c,a)
         if death or runaway:
             return redirect(url_for('finish'))
-    
+
         return render_template('game.html',day=day,bird=c,status=status,message=message)
 
-    if status == 2:
+
+    else:
         if task == 'eat':
             food_adult(a)
-            message = 'ご飯を食べました'
+            message = 'ごはんを食べました'
         elif task == 'play':
             play_adult(a)
             message = '遊びました'
@@ -272,6 +283,7 @@ def growing():
         elif task == 'clean':
             cleen_adult(a)
             message = '掃除しました'
+
         else:
             return render_template('game.html',day=day,bird=a,status=status)
 
@@ -281,6 +293,8 @@ def growing():
             return redirect(url_for('finish'))
             
         return render_template('game.html',day=day,bird=a,status=status)
+    
+    return render_template('game.html',day=day,status=status,message=message)
 
     return render_template('game.html',day=day,status=status,message=message)
         
