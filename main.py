@@ -183,6 +183,9 @@ def day_end(chi, adu):
 
     if day == 25 : #終了フラグを立てる
         status = status+evo 
+        adu.hungry = chi.hungry
+        adu.dust = chi.dust
+        adu.love = chi.love
         grow_end = True
 
     #1日の開始時のパラメータ変動
