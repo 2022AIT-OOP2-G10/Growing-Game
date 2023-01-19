@@ -243,12 +243,12 @@ def growing():
     task=request.args.get('task')
     message = ''
 
-
     if status == 1 or 6:
+
 
         if task == 'eat':
             food_child(c)
-            message = 'ご飯を食べました'
+            message = 'ごはんを食べました'
         elif task == 'play':
             play_child(c)
             message = '遊びました'
@@ -257,21 +257,23 @@ def growing():
             message = '寝ました'
         elif task == 'clean':
             cleen_child(c)
-            message = 'そうじをしました'
+
+            message = '掃除しました'
+
         else:
             return render_template('game.html',day=day,bird=c,status=status)
 
         day_end(c,a)
         if death or runaway:
             return redirect(url_for('finish'))
-        
+
         return render_template('game.html',day=day,bird=c,status=status,message=message)
 
 
     else:
         if task == 'eat':
             food_adult(a)
-            message = 'ご飯を食べました'
+            message = 'ごはんを食べました'
         elif task == 'play':
             play_adult(a)
             message = '遊びました'
@@ -280,7 +282,8 @@ def growing():
             message = '寝ました'
         elif task == 'clean':
             cleen_adult(a)
-            message = 'そうじをしました'
+            message = '掃除しました'
+
         else:
             return render_template('game.html',day=day,bird=a,status=status)
 
@@ -292,6 +295,9 @@ def growing():
         return render_template('game.html',day=day,bird=a,status=status)
     
     return render_template('game.html',day=day,status=status,message=message)
+
+    return render_template('game.html',day=day,status=status,message=message)
+        
 
 #たまごをあたためる画面
 @app.route('/finish', methods=["GET"])
