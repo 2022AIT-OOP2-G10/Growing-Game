@@ -215,8 +215,6 @@ app = Flask(__name__)
 #ホーム画面
 @app.route('/', methods=["GET"])
 def title():
-    #タイトル画面表示時に表示
-    play_child(c)
     return render_template('title.html')
 
 #たまごの選択画面
@@ -243,12 +241,11 @@ def warm():
 @app.route('/game', methods=["GET"])
 def growing():
     # クエリを使ってGETメソッドで処理できる(都合悪そうならPOSTにも変更可)
+
     task=request.args.get('task')
     message = ''
 
-    if status == 1 or 6:
-
-
+    if status == 1 or status == 6:
         if task == 'eat':
             food_child(c)
             message = 'ごはんを食べました'
@@ -260,12 +257,9 @@ def growing():
             message = '寝ました'
         elif task == 'clean':
             cleen_child(c)
-
             message = '掃除しました'
-
         else:
             return render_template('game.html',day=day,bird=c,status=status)
-
         day_end(c,a)
         if death or runaway:
             return redirect(url_for('finish'))
@@ -292,14 +286,10 @@ def growing():
 
         day_end(c,a)
         
-        if day > 25 or death or runaway:
+        if grow_end or death or runaway:
             return redirect(url_for('finish'))
             
-        return render_template('game.html',day=day,bird=a,status=status)
-    
-    return render_template('game.html',day=day,status=status,message=message)
-
-    return render_template('game.html',day=day,status=status,message=message)
+        return render_template('game.html',day=day,bird=a,status=status,message=message)
         
 
 #たまごをあたためる画面
@@ -308,4 +298,4 @@ def finish():
     return render_template('finish.html',death=death, runaway=runaway, status=status)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
