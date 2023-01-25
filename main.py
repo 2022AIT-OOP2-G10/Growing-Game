@@ -205,7 +205,7 @@ def day_end(chi, adu):
 
     #1日の開始時のパラメータ変動
 
-    if status == 1 or 6 :
+    if status == 1 or status == 6 :
 
         if chi.dust <= 90:
             chi.dust = chi.dust + 10
@@ -215,7 +215,7 @@ def day_end(chi, adu):
             chi.love = chi.love - 10
         else:
             chi.love = 0
-    elif status == 2 or status == 6:
+    else:
         if adu.dust <= 90:
             adu.dust = adu.dust + 10
         else:
