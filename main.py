@@ -141,16 +141,31 @@ a = adult()
 def day_end(chi, adu):
     global status, day, food_count, evo, grow_end, death, runaway, runaway_count
     #成長分岐
-    if status==1 or status==6 or status ==3 or status ==8:
-        if food_count >= 6:
+    if status==1 or status ==3:
+        if chi.love >= 60 or adu.love >= 60:
             evo = 1
-        elif food_count < 6:
+        elif chi.love < 60 or adu.love < 60:
             evo = 2
-    elif status==2 or status==7:
+    elif status==2:
+        if adu.love >= 60:
+            evo = 2
+        elif adu.love < 60:
+            evo = 3
+    elif status==6:
+        if food_count >= 9:
+            evo = 2
+        elif food_count < 9:
+            evo = 1
+    elif status==7:
+        if food_count >= 9:
+            evo = 3
+        elif food_count < 9:
+            evo = 2
+    elif status==8:
         if food_count >= 6:
             evo = 2
         elif food_count < 6:
-            evo = 3
+            evo = 1
     #死亡フラグ
     if status == 1 or status == 6:
         if chi.hungry == 0 :
@@ -231,11 +246,6 @@ def select():
         return redirect(url_for('growing'))
 
     return render_template('select-egg.html')
-
-#たまごをあたためる画面
-@app.route('/warm', methods=["GET"])
-def warm():
-    return render_template('warm-egg.html')
 
 #メインのゲーム画面(タスクの選択)
 @app.route('/game', methods=["GET"])
