@@ -1,229 +1,195 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import webbrowser
 from flask import Flask, request, render_template, url_for, redirect
 
-# 満腹度
-hungry = 0
-# 好感度
-love = 0
-# ほこり
-dust = 0
-# 成長度
-grow = 0
+class character :
+    hungry = 0# 満腹度
+    love = 0# 好感度
+    dust = 0# ほこり
+    status = 0
+    day = 1# 何日目か
+    food_count = 0 #ごはんを選択した数
+    evo = 0 #分岐フラグ
+    grow_end = False #育成終了
+    death = False #餓死
+    runaway = False #逃走
+    runaway_count = 0 #逃走までの日数カウント
 
-# 何日目か
-day = 1
+c = character()
 
-status = 1
+def reset_para(cha):
+    cha.hungry = 0
+    cha.love = 0
+    cha.dust = 0
+    cha.status = 0
+    cha.day = 1
+    cha.food_count = 0 
+    cha.evo = 0 
+    cha.grow_end = False 
+    cha.death = False 
+    cha.runaway = False 
+    cha.runaway_count = 0 
 
-food_count = 0 #ごはんを選択した数
-evo = 0 #分岐フラグ
-grow_end = False #育成終了
-death = False #餓死
-runaway = False #逃走
-runaway_count = 0 #逃走までの日数カウント
+def play_child(cha):
+    if cha.hungry <= 40:
+        cha.hungry = 0
+    elif cha.hungry > 40:
+        cha.hungry = cha.hungry - 40
 
-class child :
-    hungry = 0
-    love = 0
-    dust = 0
+    if cha.love >= 80:
+        cha.love = 100
+    elif cha.love < 80:
+        cha.love = cha.love + 20
 
-def play_child(chi):
-    if chi.hungry <= 40:
-        chi.hungry = 0
-    elif chi.hungry > 40:
-        chi.hungry = chi.hungry - 40
-
-    if chi.love >= 80:
-        chi.love = 100
-    elif chi.love < 80:
-        chi.love = chi.love + 20
-
-    if chi.dust >= 50:
-        chi.dust = 100
-    elif chi.dust < 50:
-        chi.dust = chi.dust + 50
+    if cha.dust >= 50:
+        cha.dust = 100
+    elif cha.dust < 50:
+        cha.dust = cha.dust + 50
 
     
-def food_child(chi):
-    global food_count
-    food_count=food_count+1
-    chi.hungry = 100
-    if chi.love <= 90:
-        chi.love = chi.love + 10
-    elif chi.love > 90:
-        chi.love = 100
+def food_child(cha):
+    cha.food_count=cha.food_count+1
+    cha.hungry = 100
+    if cha.love <= 90:
+        cha.love = cha.love + 10
+    elif cha.love > 90:
+        cha.love = 100
   
-def cleen_child(chi):
-    if chi.hungry <= 40:
-        chi.hungry = 0
-    elif chi.hungry > 40:
-        chi.hungry = chi.hungry - 40
+def cleen_child(cha):
+    if cha.hungry <= 40:
+        cha.hungry = 0
+    elif cha.hungry > 40:
+        cha.hungry = cha.hungry - 40
     
-    if chi.love >= 90:
-        chi.love = 100
-    elif chi.love < 90:
-        chi.love = chi.love + 10
-    chi.dust = 0
+    if cha.love >= 90:
+        cha.love = 100
+    elif cha.love < 90:
+        cha.love = cha.love + 10
+    cha.dust = 0
 
-def sleep_child(chi):
-    if chi.hungry <= 30:
-        chi.hungry = 0
-    elif chi.hungry > 30:
-        chi.hungry = chi.hungry - 30
+def sleep_child(cha):
+    if cha.hungry <= 30:
+        cha.hungry = 0
+    elif cha.hungry > 30:
+        cha.hungry = cha.hungry - 30
 
-    if chi.love >= 20:
-        chi.love = chi.love - 20
-    elif chi.love < 20:
-        chi.love = 0
+    if cha.love >= 20:
+        cha.love = cha.love - 20
+    elif cha.love < 20:
+        cha.love = 0
 
-c = child()
+def play_adult(cha):
+    if cha.hungry <= 30:
+        cha.hungry = 0
+    elif cha.hungry > 30:
+        cha.hungry = cha.hungry - 30
 
-class adult :
-    hungry = 0
-    love = 0
-    dust = 0
+    if cha.love >= 85:
+        cha.love = 100
+    elif cha.love < 85:
+        cha.love = cha.love + 15
 
-
-def play_adult(adu):
-    if adu.hungry <= 30:
-        adu.hungry = 0
-    elif adu.hungry > 30:
-        adu.hungry = adu.hungry - 30
-
-    if adu.love >= 85:
-        adu.love = 100
-    elif adu.love < 85:
-        adu.love = adu.love + 15
-
-    if adu.dust >= 60:
-        adu.dust = 100
-    elif adu.dust < 60:
-        adu.dust = adu.dust + 40
+    if cha.dust >= 60:
+        cha.dust = 100
+    elif cha.dust < 60:
+        cha.dust = cha.dust + 40
         
+def food_adult(cha):
+    cha.food_count=cha.food_count+1
+    cha.hungry = 100
+    if cha.love <= 90:
+        cha.love = cha.love + 10
+    elif cha.love > 90:
+        cha.love = 100
 
-def food_adult(adu):
-    global food_count
-    food_count=food_count+1
-    adu.hungry = 100
-    if adu.love <= 90:
-        adu.love = adu.love + 10
-    elif adu.love > 90:
-        adu.love = 100
-
-
-def cleen_adult(adu):
-    if adu.hungry <= 30:
-        adu.hungry = 0
-    elif adu.hungry > 30:
-        adu.hungry = adu.hungry - 30
+def cleen_adult(cha):
+    if cha.hungry <= 30:
+        cha.hungry = 0
+    elif cha.hungry > 30:
+        cha.hungry = cha.hungry - 30
     
-    if adu.love >= 80:
-        adu.love = 100
-    elif adu.love < 80:
-        adu.love = adu.love + 20
-    adu.dust = 0
+    if cha.love >= 80:
+        cha.love = 100
+    elif cha.love < 80:
+        cha.love = cha.love + 20
+    cha.dust = 0
 
-def sleep_adult(adu):
+def sleep_adult(cha):
     
-    if adu.hungry <= 30:
-        adu.hungry = 0
-    elif adu.hungry > 30:
-        adu.hungry = adu.hungry - 30
+    if cha.hungry <= 30:
+        cha.hungry = 0
+    elif cha.hungry > 30:
+        cha.hungry = cha.hungry - 30
 
-    if adu.love >= 20:
-        adu.love = adu.love - 20
-    elif adu.love < 20:
-        adu.love = 0
+    if cha.love >= 20:
+        cha.love = cha.love - 20
+    elif cha.love < 20:
+        cha.love = 0
 
-a = adult()
-
-def day_end(chi, adu):
-    global status, day, food_count, evo, grow_end, death, runaway, runaway_count
+def day_end(cha):
     #成長分岐
-    if status==1 or status ==3:
-        if chi.love >= 60 or adu.love >= 60:
-            evo = 1
-        elif chi.love < 60 or adu.love < 60:
-            evo = 2
-    elif status==2:
-        if adu.love >= 60:
-            evo = 2
-        elif adu.love < 60:
-            evo = 3
-    elif status==6:
-        if food_count >= 9:
-            evo = 2
-        elif food_count < 9:
-            evo = 1
-    elif status==7:
-        if food_count >= 9:
-            evo = 3
-        elif food_count < 9:
-            evo = 2
-    elif status==8:
-        if food_count >= 6:
-            evo = 2
-        elif food_count < 6:
-            evo = 1
+    if cha.status==1 or cha.status ==3:
+        if cha.love >= 60:
+            cha.evo = 1
+        else:
+            cha.evo = 2
+    elif cha.status==2:
+        if cha.love >= 60:
+            cha.evo = 2
+        else:
+            cha.evo = 3
+    elif cha.status==6:
+        if cha.food_count >= 9:
+            cha.evo = 2
+        else:
+            cha.evo = 1
+    elif cha.status==7:
+        if cha.food_count >= 9:
+            cha.evo = 3
+        else:
+            cha.evo = 2
+    elif cha.status==8:
+        if cha.food_count >= 6:
+            cha.evo = 2
+        else:
+            cha.evo = 1
     #死亡フラグ
-    if status == 1 or status == 6:
-        if chi.hungry == 0 :
-            death = True
-    else:
-        if adu.hungry == 0 :
-            death = True
+    if cha.hungry == 0 :
+            cha.death = True
     
     #逃走フラグ
-    if status == 1 or status == 6:
-        if chi.love < 30 : #好感度30未満でカウント増加
-            runaway_count = runaway_count + 1
-        elif chi.love >= 30 : #好感度30以上でカウントリセット
-            runaway_count = 0
-        if runaway_count == 3 : #カウント3で逃走フラグがたつ
-            runaway = True
-    else:
-        if adu.love < 30 :
-            runaway_count = runaway_count + 1
-        elif adu.love >= 30 :
-            runaway_count = 0
-        if runaway_count == 3 :
-            runaway = True
+    if cha.status == 1 or cha.status == 6:
+        if cha.love < 30 : #好感度30未満でカウント増加
+            cha.runaway_count = cha.runaway_count + 1
+        elif cha.love >= 30 : #好感度30以上でカウントリセット
+            cha.runaway_count = 0
+        if cha.runaway_count == 3 : #カウント3で逃走フラグがたつ
+            cha.runaway = True
 
-    day = day + 1
-    if day == 10 :
+    cha.day = cha.day + 1
+    if cha.day == 10 :
 
-        status = status+evo 
-        adu.hungry = chi.hungry
-        adu.dust = chi.dust
-        adu.love = chi.love
-        food_count=0
+        cha.status = cha.status+cha.evo 
+        cha.food_count=0
 
-    if day == 25 : #終了フラグを立てる
-        status = status+evo 
-        grow_end = True
+    if cha.day == 25 : #終了フラグを立てる
+        cha.status = cha.status+cha.evo 
+        cha.grow_end = True
 
     #1日の開始時のパラメータ変動
 
-    if status == 1 or status == 6 :
-
-        if chi.dust <= 90:
-            chi.dust = chi.dust + 10
+    if cha.dust>=70:
+        if cha.love >= 20:
+            cha.love = cha.love - 20
         else:
-            chi.dust = 100
-        if chi.love >= 10:
-            chi.love = chi.love - 10
-        else:
-            chi.love = 0
+            cha.love = 0
+        
+    if cha.dust <= 90:
+        cha.dust = cha.dust + 10
     else:
-        if adu.dust <= 90:
-            adu.dust = adu.dust + 10
-        else:
-            adu.dust = 100
-        if adu.love >= 10:
-            adu.love = adu.love - 10
-        else:
-            adu.love = 0
+        cha.dust = 100
+
 
 app = Flask(__name__)
 
@@ -235,14 +201,14 @@ def title():
 #たまごの選択画面
 @app.route('/select', methods=["GET"])
 def select():
-    global status
+
     egg = request.args.get('egg')
     if egg == '1':
         # 何かしらの処理
-        status=6    
+        c.status=6    
         return redirect(url_for('growing'))
     if egg == '2':
-        status=1
+        c.status=1
         return redirect(url_for('growing'))
 
     return render_template('select-egg.html')
@@ -255,7 +221,7 @@ def growing():
     task=request.args.get('task')
     message = ''
 
-    if status == 1 or status == 6:
+    if c.status == 1 or c.status == 6:
         if task == 'eat':
             food_child(c)
             message = 'ごはんを食べました'
@@ -269,43 +235,49 @@ def growing():
             cleen_child(c)
             message = '掃除しました'
         else:
-            return render_template('game.html',day=day,bird=c,status=status)
-        day_end(c,a)
-        if death or runaway:
+            return render_template('game.html',day=c.day,bird=c,status=c.status)
+        day_end(c)
+        if c.death or c.runaway:
             return redirect(url_for('finish'))
 
-        return render_template('game.html',day=day,bird=c,status=status,message=message)
+        return render_template('game.html',day=c.day,bird=c,status=c.status,message=message)
 
 
     else:
         if task == 'eat':
-            food_adult(a)
+            food_adult(c)
             message = 'ごはんを食べました'
         elif task == 'play':
-            play_adult(a)
+            play_adult(c)
             message = '遊びました'
         elif task == 'sleep':
-            sleep_adult(a)
+            sleep_adult(c)
             message = '寝ました'
         elif task == 'clean':
-            cleen_adult(a)
+            cleen_adult(c)
             message = '掃除しました'
 
         else:
-            return render_template('game.html',day=day,bird=a,status=status)
+            return render_template('game.html',day=c.day,bird=c,status=c.status)
 
-        day_end(c,a)
+        day_end(c)
         
-        if grow_end or death or runaway:
+        if c.grow_end or c.death or c.runaway:
             return redirect(url_for('finish'))
             
-        return render_template('game.html',day=day,bird=a,status=status,message=message)
+        return render_template('game.html',day=c.day,bird=c,status=c.status,message=message)
         
 
-#たまごをあたためる画面
+#リザルト画面
 @app.route('/finish', methods=["GET"])
 def finish():
-    return render_template('finish.html',death=death, runaway=runaway, status=status)
+    task=request.args.get('task')
+    if task=='onemore':
+        reset_para(c)
+        return redirect(url_for('select'))
+
+    return render_template('finish.html',death=c.death, runaway=c.runaway, status=c.status)
 
 if __name__ == '__main__':
+    webbrowser.open("http://127.0.0.1:5000", new=1, autoraise=True)
     app.run()
