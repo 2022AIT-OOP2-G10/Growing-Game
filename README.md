@@ -13,10 +13,11 @@
 |K21014 今井 奎冬|CSS作成|CSS追加中|
 |K21054 近藤 陸|ゲームシステムの構想＆|css追加|
 
-## 前提条件
-- MAC OS
+## 動作環境
+- MacOS　BigSur
 - Python 3.10.6
-- flask 
+- flask 2.2 
+- Google Chrome 109.0.5414.87
 
 ## 実行方法
 main.pyを実行して、表示されるアドレスにアクセスする。
