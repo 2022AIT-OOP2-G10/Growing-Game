@@ -159,12 +159,11 @@ def day_end(cha):
             cha.death = True
     
     #逃走フラグ
-    if cha.status == 1 or cha.status == 6:
-        if cha.love < 30 : #好感度30未満でカウント増加
+    if cha.love < 30 : #好感度30未満でカウント増加
             cha.runaway_count = cha.runaway_count + 1
-        elif cha.love >= 30 : #好感度30以上でカウントリセット
+    elif cha.love >= 30 : #好感度30以上でカウントリセット
             cha.runaway_count = 0
-        if cha.runaway_count == 3 : #カウント3で逃走フラグがたつ
+    if cha.runaway_count == 3 : #カウント3で逃走フラグがたつ
             cha.runaway = True
 
     cha.day = cha.day + 1
