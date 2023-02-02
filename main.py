@@ -4,7 +4,7 @@ import webbrowser
 from flask import Flask, request, render_template, url_for, redirect
 
 class character :
-    hungry = 0# 満腹度
+    hungry = 100# 満腹度
     love = 0# 好感度
     dust = 0# ほこり
     status = 0
@@ -19,7 +19,7 @@ class character :
 c = character()
 
 def reset_para(cha):
-    cha.hungry = 0
+    cha.hungry = 100
     cha.love = 0
     cha.dust = 0
     cha.status = 0
